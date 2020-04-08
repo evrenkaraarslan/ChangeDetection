@@ -1,0 +1,10 @@
+function T = otsuThreshold(indx)
+Tr = (1:length(indx)); % Set threshold axis
+p = indx/sum(indx); % Calculate the probability of each intensity level
+mu = cumsum(p.*Tr); % Calculate expected value vector
+q1_t = cumsum(p); % Calculate the probability mass function vector
+mu1_t = mu ./ q1_t; % Calculate expected value vector for lower threshold section
+mu2_t = (mu(end) - mu1_t .* q1_t)./(1 - q1_t); % Calculate expected value vector for higher threshold section
+sg_B_sq = q1_t .*(1 - q1_t) .* (mu1_t - mu2_t).^2 ; % Calculate between-group variance
+[mx,indMx] = max(sg_B_sq); % Find the maximum of between-group variance
+T = Tr(indMx); % Find the threshold that maximize between-group variance
